@@ -1,0 +1,6 @@
+/.direnv
+/node_modules
+.vercel
+__pycache__
+/*.ics
+/.env
