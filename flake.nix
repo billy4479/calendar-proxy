@@ -20,6 +20,7 @@
             python3Packages.ics
             python3Packages.requests
             python3Packages.python-dotenv
+            python3Packages.flask
             ruff
           ];
         };
