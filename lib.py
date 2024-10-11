@@ -3,6 +3,12 @@ import requests
 import ics
 
 def get_calendar(cache_path, url):
+
+    # TODO: figure out caching in production
+    if os.getenv("ENV") == "prod":
+        cal_text = requests.get(url).text
+        return ics.Calendar(cal_text)
+
     if not os.path.exists(cache_path):
         cal_text = requests.get(url).text
         with open(cache_path, "w") as f:
