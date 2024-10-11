@@ -16,11 +16,16 @@
             nodejs_latest
             nodePackages_latest.vercel
 
-            python3
-            python3Packages.ics
-            python3Packages.requests
-            python3Packages.python-dotenv
-            python3Packages.flask
+            (python3.withPackages (
+              python-pkgs:
+              (with python-pkgs; [
+                ics
+                requests
+                python-dotenv
+                flask
+              ])
+            ))
+
             ruff
           ];
         };
