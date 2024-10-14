@@ -5,7 +5,7 @@ import arrow
 
 # FIXME: this is kind of a hack, but it works
 daylight_start = arrow.get("20230330T020000")
-daylight_end = arrow.get("20231027T030000")
+daylight_end = arrow.get("20231006T030000") # What? it should be 27/10
 
 
 def fix_time(event: ics.Event):
