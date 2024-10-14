@@ -2,9 +2,9 @@ from api.app import app
 import lib
 import flask
 
-@app.route('/lessons')
-def rewrite_lessons():
 
+@app.route("/lessons")
+def rewrite_lessons():
     cal = lib.get_calendar_lessons()
 
     for event in cal.events:
@@ -34,5 +34,6 @@ def rewrite_lessons():
         event.name = f"{class_name} ({code})"
         event.description = f"Room {room}\nProfessor{'' if len(teachers) == 1 else 's'}: {', '.join(teachers)}"
 
-    return flask.Response(response = cal.serialize(), mimetype = "text/calendar")
+        lib.fix_time(event)
 
+    return flask.Response(response=cal.serialize(), mimetype="text/calendar")
