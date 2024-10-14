@@ -1,10 +1,14 @@
 from api.app import app
 import flask
 import lib
+import arrow
 
 
 @app.route("/exams")
 def process_exams():
+    daylight_start = arrow.get("20230330T020000")
+    daylight_end = arrow.get("20231027T030000")
+
     cal = lib.get_calendar_exams()
 
     for event in cal.events:
@@ -29,6 +33,6 @@ def process_exams():
         event.name = f"Exam: {exam_name}"
         event.description = f"{exam_type} exam"
 
-        lib.fix_time(event)
+        lib.fix_time(event, daylight_start, daylight_end)
 
     return flask.Response(response=cal.serialize(), mimetype="text/calendar")

@@ -1,10 +1,14 @@
 from api.app import app
 import lib
 import flask
+import arrow
 
 
 @app.route("/lessons")
 def rewrite_lessons():
+    daylight_start = arrow.get("20230330T020000")
+    daylight_end = arrow.get("20231006T030000")  # What? it should be 27/10
+
     cal = lib.get_calendar_lessons()
 
     for event in cal.events:
@@ -34,6 +38,6 @@ def rewrite_lessons():
         event.name = f"{class_name} ({code})"
         event.description = f"Room {room}\nProfessor{'' if len(teachers) == 1 else 's'}: {', '.join(teachers)}"
 
-        lib.fix_time(event)
+        lib.fix_time(event, daylight_start, daylight_end)
 
     return flask.Response(response=cal.serialize(), mimetype="text/calendar")
