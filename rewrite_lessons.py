@@ -7,7 +7,7 @@ import arrow
 @app.route("/lessons")
 def rewrite_lessons():
     daylight_start = arrow.get("20230330T020000")
-    daylight_end = arrow.get("20231006T030000")  # What? it should be 27/10
+    daylight_end = arrow.get("20231027T030000")  # What? it should be 27/10
 
     cal = lib.get_calendar_lessons()
 
