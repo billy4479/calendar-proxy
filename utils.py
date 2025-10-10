@@ -1,11 +1,12 @@
 import os
-import requests
+
 import ics
-import arrow
+import requests
+from arrow import arrow
 
 
 # FIXME: this is kind of a hack, but it works
-def fix_time(event: ics.Event, daylight_start, daylight_end):
+def fix_time(event: ics.Event, daylight_start: arrow.Arrow, daylight_end: arrow.Arrow):
     old_duration = event.duration
 
     if (
@@ -28,7 +29,7 @@ def fix_time(event: ics.Event, daylight_start, daylight_end):
     event.duration = old_duration
 
 
-def get_calendar(cache_path, url):
+def get_calendar(cache_path: str, url: str):
     # TODO: figure out caching in production
     if os.getenv("ENV") == "prod":
         cal_text = requests.get(url).text
@@ -37,7 +38,7 @@ def get_calendar(cache_path, url):
     if not os.path.exists(cache_path):
         cal_text = requests.get(url).text
         with open(cache_path, "w") as f:
-            f.write(cal_text)
+            _ = f.write(cal_text)
         return ics.Calendar(cal_text)
     else:
         with open(cache_path, "rb") as f:
