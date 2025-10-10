@@ -2,7 +2,7 @@ import os
 
 import arrow
 import flask
-from flask import Flask
+from flask import Flask, request
 
 import utils
 
@@ -11,6 +11,9 @@ app = Flask(__name__)
 
 @app.route("/exams")
 def process_exams():
+    if request.args.get("t") != os.getenv("TOKEN"):
+        return flask.Response(response="Unauthorized", status=401)
+
     daylight_start = arrow.get("20230330T020000")
     daylight_end = arrow.get("20231027T030000")
 
@@ -45,6 +48,9 @@ def process_exams():
 
 @app.route("/lessons")
 def rewrite_lessons():
+    if request.args.get("t") != os.getenv("TOKEN"):
+        return flask.Response(response="Unauthorized", status=401)
+
     daylight_start = arrow.get("20230330T020000")
     daylight_end = arrow.get("20231027T030000")  # What? it should be 27/10
 
