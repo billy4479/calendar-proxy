@@ -59,6 +59,7 @@ def make_nice_string(x: str) -> str:
         .replace("And", "and")
         .replace("Of", "of")
         .replace("In", "in")
+        .replace("For", "for")
         .replace("Ii", "II")
         .replace("Ai", "AI")
     )
