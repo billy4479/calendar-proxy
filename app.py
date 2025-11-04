@@ -46,7 +46,7 @@ def process_exams():
 
     t = datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()
     print(
-        f'[{t}] {request.path} -> {len(cal.events)} events for "{request.user_agent}"@{request.remote_addr}'
+        f'[{t}] {request.path} -> {len(cal.events)} events for "{request.user_agent}"@{request.headers["X-Real-IP"]}'
     )
 
     return flask.Response(response=cal.serialize(), mimetype="text/calendar")
@@ -93,7 +93,7 @@ def rewrite_lessons():
 
     t = datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()
     print(
-        f'[{t}] {request.path} -> {len(cal.events)} for "{request.user_agent}"@{request.remote_addr}'
+        f'[{t}] {request.path} -> {len(cal.events)} events for "{request.user_agent}"@{request.headers["X-Real-IP"]}'
     )
     return flask.Response(response=cal.serialize(), mimetype="text/calendar")
 
