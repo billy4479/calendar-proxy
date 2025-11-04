@@ -1,3 +1,4 @@
+import datetime
 import os
 
 import arrow
@@ -43,6 +44,11 @@ def process_exams():
 
         utils.fix_time(event, daylight_start, daylight_end)
 
+    t = datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()
+    print(
+        f'[{t}] {request.path} -> {len(cal.events)} events for "{request.user_agent}"@{request.remote_addr}'
+    )
+
     return flask.Response(response=cal.serialize(), mimetype="text/calendar")
 
 
@@ -85,6 +91,10 @@ def rewrite_lessons():
 
         utils.fix_time(event, daylight_start, daylight_end)
 
+    t = datetime.datetime.now().astimezone().replace(microsecond=0).isoformat()
+    print(
+        f'[{t}] {request.path} -> {len(cal.events)} for "{request.user_agent}"@{request.remote_addr}'
+    )
     return flask.Response(response=cal.serialize(), mimetype="text/calendar")
 
 
