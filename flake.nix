@@ -53,6 +53,8 @@
                 "--chdir"
                 "${files}"
                 "app:app"
+                "--access-logfile"
+                "-"
               ];
             };
           };
