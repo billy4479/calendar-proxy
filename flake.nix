@@ -21,44 +21,26 @@
         );
       in
       {
-        packages = rec {
-          files = pkgs.stdenvNoCC.mkDerivation {
-            pname = "calendar-proxy";
-            version = "1.0.0";
+        packages.default = pkgs.stdenvNoCC.mkDerivation {
+          pname = "calendar-proxy";
+          version = "1.0.0";
 
-            src = ./.;
-            dontBuild = true;
-            dontCondigure = true;
-            dontFixup = true;
+          src = ./.;
+          dontBuild = true;
+          dontConfigure = true;
 
-            installPhase = # sh
-              ''
-                mkdir -p $out
-                mv *.py $out
-              '';
-          };
+          nativeBuildInputs = [ pkgs.makeWrapper ];
 
-          container = pkgs.dockerTools.buildLayeredImage {
-            name = "calendar-proxy";
-            tag = "latest";
+          installPhase = ''
+            mkdir -p $out/bin $out/share/calendar-proxy
+            cp *.py $out/share/calendar-proxy/
 
-            contents = [
-              pythonPkgs
-              files
-            ];
-
-            config = {
-              Cmd = [
-                "gunicorn"
-                "--chdir"
-                "${files}"
-                "app:app"
-                "--access-logfile"
-                "-"
-              ];
-            };
-          };
+            makeWrapper ${pythonPkgs}/bin/gunicorn $out/bin/calendar-proxy \
+              --prefix PYTHONPATH : "$out/share/calendar-proxy" \
+              --add-flags "app:app --access-logfile -"
+          '';
         };
+
         devShells.default = pkgs.mkShell {
           packages = with pkgs; [
             pythonPkgs
